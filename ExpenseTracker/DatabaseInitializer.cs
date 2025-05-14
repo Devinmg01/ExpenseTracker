@@ -27,6 +27,22 @@ public static class DatabaseInitializer
                 );";
             cmd.ExecuteNonQuery();
 
+            // Seed default categories if none exist
+            cmd.CommandText = "SELECT COUNT(*) FROM Categories";
+            int count = Convert.ToInt32(cmd.ExecuteScalar());
+            if (count == 0)
+            {
+                cmd.CommandText = @"
+                INSERT INTO Categories (Name) VALUES 
+                ('Food'), 
+                ('Rent'), 
+                ('Salary'),
+                ('Entertainment'),
+                ('Utilities');";
+                cmd.ExecuteNonQuery();
+            }
+
+
             // Create Transactions table
             cmd.CommandText = @"
                 CREATE TABLE IF NOT EXISTS Transactions (

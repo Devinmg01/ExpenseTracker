@@ -9,13 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
+    <None Remove="expenses.db" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="expenses.db">
+    <Content Include="expenses.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
   </ItemGroup>
 
 </Project>

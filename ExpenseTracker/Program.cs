@@ -12,7 +12,7 @@ namespace ExpenseTracker
             // see https://aka.ms/applicationconfiguration.
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-    
+            DatabaseInitializer.Initialize();
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());
         }
