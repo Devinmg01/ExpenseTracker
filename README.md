@@ -3,7 +3,7 @@
 A desktop expense tracking application built with **C# WinForms** and **SQLite**, category management, and transaction editing. Perfect for personal budgeting,  data visualization, and local persistence.
 
 ---
-![Transaction Form](ScreenShots/expense sc.png)
+![Transaction Form](ScreenShots/expenseSc.png)
 
 ##  Features
 
