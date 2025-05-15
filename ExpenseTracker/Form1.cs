@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 using System.Windows.Forms;
 
@@ -12,6 +13,7 @@ namespace ExpenseTracker
         {
             InitializeComponent();
             LoadCategories();
+            LoadTransactions();
         }
 
         private void LoadCategories()
@@ -77,7 +79,7 @@ namespace ExpenseTracker
                     cmd.Parameters.AddWithValue("@notes", notes);
                     cmd.ExecuteNonQuery();
                 }
-
+                LoadTransactions();
                 MessageBox.Show("Transaction added successfully!");
                 ClearInputs(); 
             }
@@ -95,6 +97,34 @@ namespace ExpenseTracker
             dtpDate.Value = DateTime.Today;
             txtNotes.Text = "";
         }
+
+        private void LoadTransactions()
+        {
+            string connString = "Data Source=expenses.db";
+
+            using (var conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = @"
+            SELECT 
+                T.Amount, 
+                T.Type, 
+                C.Name AS Category, 
+                T.Date, 
+                T.Notes
+            FROM Transactions T
+            JOIN Categories C ON T.CategoryId = C.Id
+            ORDER BY T.Date DESC";
+
+                var adapter = new SQLiteDataAdapter(cmd);
+                var dt = new DataTable();
+                adapter.Fill(dt);
+
+                dgvTransactions.DataSource = dt;
+            }
+        }
+
 
     }
 }
