@@ -28,19 +28,22 @@ public static class DatabaseInitializer
             cmd.ExecuteNonQuery();
 
             // Seed default categories if none exist
-            cmd.CommandText = "SELECT COUNT(*) FROM Categories";
-            int count = Convert.ToInt32(cmd.ExecuteScalar());
-            if (count == 0)
+            string[] defaultCategories = { "Food", "Rent", "Salary", "Entertainment", "Utilities", "Clothes", "Other" };
+
+            foreach (string category in defaultCategories)
             {
-                cmd.CommandText = @"
-                INSERT INTO Categories (Name) VALUES 
-                ('Food'), 
-                ('Rent'), 
-                ('Salary'),
-                ('Entertainment'),
-                ('Utilities');";
-                cmd.ExecuteNonQuery();
+                cmd.CommandText = "SELECT COUNT(*) FROM Categories WHERE Name = @name";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@name", category);
+                int exists = Convert.ToInt32(cmd.ExecuteScalar());
+
+                if (exists == 0)
+                {
+                    cmd.CommandText = "INSERT INTO Categories (Name) VALUES (@name)";
+                    cmd.ExecuteNonQuery();
+                }
             }
+
 
 
             // Create Transactions table
