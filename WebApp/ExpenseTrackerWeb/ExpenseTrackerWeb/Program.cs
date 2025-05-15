@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using ExpenseTrackerWeb.Data;
+
+
 namespace ExpenseTrackerWeb
 {
     public class Program
@@ -8,6 +12,9 @@ namespace ExpenseTrackerWeb
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
             var app = builder.Build();
 
